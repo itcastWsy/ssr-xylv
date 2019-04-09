@@ -48,6 +48,10 @@
     "followed": {
       "collection": "comment",
       "via": "follow"
+    },
+    "level": {
+      "default": "",
+      "type": "integer"
     }
   }
 }

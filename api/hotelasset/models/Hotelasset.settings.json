@@ -20,7 +20,8 @@
       "type": "string"
     },
     "hotels": {
-      "model": "hotel",
+      "collection": "hotel",
+      "dominant": true,
       "via": "hotelassets"
     }
   }

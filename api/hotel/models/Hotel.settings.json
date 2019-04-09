@@ -23,10 +23,6 @@
       "default": false,
       "type": "boolean"
     },
-    "score": {
-      "default": "",
-      "type": "float"
-    },
     "pics": {
       "collection": "file",
       "via": "related",
@@ -90,17 +86,20 @@
       "model": "hotelbrand",
       "via": "hotels"
     },
-    "hotelassets": {
-      "collection": "hotelasset",
-      "via": "hotels",
-      "dominant": true
-    },
     "price": {
       "default": "",
       "type": "float"
     },
     "country": {
       "model": "discountry",
+      "via": "hotels"
+    },
+    "scores": {
+      "default": "",
+      "type": "json"
+    },
+    "hotelassets": {
+      "collection": "hotelasset",
       "via": "hotels"
     }
   }

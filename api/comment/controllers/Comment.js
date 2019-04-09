@@ -81,6 +81,56 @@ module.exports = {
    */
 
   create: async (ctx) => {
+
+    const {hotel: id, score, follow} = ctx.request.body;
+
+    const level = !follow ? 1 : 2;
+    ctx.request.body.level = level;
+
+    const hotel = await strapi.services.hotel.fetch({id});
+    const data = hotel.toJSON();
+    const scoreCache = {};
+
+    if(!data.scores){
+      data.scores = {
+        all: 0,
+        location: 0,
+        service: 0,
+        fancility: 0
+      };
+    }
+
+    const commentTotal = data.comments.length;
+
+    /**
+      (4.4+4+4.6+4.2+4.9) / 5 = 4.42
+
+      (4.4+4+4.6+4.2) / 4 = 4.3
+      (4.9-4.3) / 5 = 0.12
+      (4.9-4.3) / 5 + 4.3 = 4.42
+    */
+
+    if(score && score.all){
+      scoreCache.all = (score.all - data.scores.all) / commentTotal + data.scores.all;
+    }
+    if(score && score.location){
+      scoreCache.location = (score.location - data.scores.location) / commentTotal + data.scores.location;
+    }
+    if(score && score.service){
+      scoreCache.service = (score.service - data.scores.service) / commentTotal + data.scores.service;
+    }
+    if(score && score.fancility){
+      scoreCache.fancility = (score.fancility - data.scores.fancility) / commentTotal + data.scores.fancility;
+    }
+
+    await strapi.services.hotel.edit({
+      id,
+      scores: {
+        ...data.scores,
+        ...scoreCache
+      }
+    }) ;
+
     return strapi.services.comment.add(ctx.request.body);
   },
 

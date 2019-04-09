@@ -13,13 +13,15 @@ module.exports = {
   comments: async ctx => {
     //const data = await strapi.models.comment.where(ctx.query).fetchAll();
 
-    const comments = await strapi.services.comment.fetchAll(ctx.query);
+    ctx.query = {...ctx.query, level_contains: 1}
+
+    const data = await strapi.services.comment.fetchAll(ctx.query);
     const total = await strapi.services.comment.count(ctx.query);
 
-    const data = comments.toJSON().filter(v => {
-      v.hotel = v.hotel.id;
-      return !v.follow;
-    });
+    // const data = comments.toJSON().filter(v => {
+    //   v.hotel = v.hotel.id;
+    //   return !v.follow;
+    // });
 
     return {
       data,
@@ -54,7 +56,7 @@ module.exports = {
   find: async (ctx) => {
 
     const {enterTime, leftTime, ...props} = ctx.query;
-    let data = {}
+    let data = {};
 
     // find scenics
     // if(props.city){
