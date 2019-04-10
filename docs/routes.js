@@ -110,13 +110,14 @@
 * @apiName Hotels
 * @apiGroup HOTEL
 *
+* @apiParam {Number} id             酒店id(酒店详情)
 * @apiParam {Number} city 			城市
 * @apiParam {Number} scenic         景点  --- 有问题 
 * @apiParam {String} name_contains 	名字模糊查询
 * @apiParam {Number} hotellevel     酒店星级
 * @apiParam {Number} hoteltype      酒店类型
 * @apiParam {Number} hotelbrand     酒店品牌
-* @apiParam {Number} hotelasset     酒店设施
+* @apiParam {Number} hotelasset     酒店设施 --- 有问题 
 * @apiParam {String} _sort  		排序
 * @apiParam {Number} _limit  		条数
 * @apiParam {Number} _start         开始数据（分页）

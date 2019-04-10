@@ -29,7 +29,7 @@ module.exports = {
     const res = [...provinces.toJSON(), ...cities.toJSON(), ...countries.toJSON()];
 
     const data = res.map(v => {
-      let {scenics, hotels, ...props} = v;
+      let { hotels, ...props} = v;
       return props;
     })
 
