@@ -111,13 +111,13 @@
 * @apiGroup HOTEL
 *
 * @apiParam {Number} id             酒店id(酒店详情)
-* @apiParam {Number} city 			城市
-* @apiParam {Number} scenic         景点  --- 有问题 
+* @apiParam {Number} city 			城市id
+* @apiParam {Number} scenic         景点id
 * @apiParam {String} name_contains 	名字模糊查询
 * @apiParam {Number} hotellevel     酒店星级
 * @apiParam {Number} hoteltype      酒店类型
 * @apiParam {Number} hotelbrand     酒店品牌
-* @apiParam {Number} hotelasset     酒店设施 --- 有问题 
+* @apiParam {Number} hotelasset     酒店设施
 * @apiParam {String} _sort  		排序
 * @apiParam {Number} _limit  		条数
 * @apiParam {Number} _start         开始数据（分页）
@@ -552,6 +552,44 @@
         url: "/uploads/a067aac50f3c4224bfb060f7c81dc54c.jpeg"
     }
 ]
+*
+* @apiUse RkNotFoundException
+*/
+
+
+/**
+* 
+* @api {get} /airs 获取机票
+* @apiName airs
+* @apiGroup AIR
+*
+* @apiParam {String} departCity       出发城市
+* @apiParam {String} departCode       出发城市代码
+* @apiParam {String} destCity         目标城市
+* @apiParam {String} destCode         目标城市代码
+* @apiParam {String} departDate       日期 2019-05-01
+*
+* 
+* @apiSuccessExample 成功响应：
+{
+  info: {
+    departCity,
+    destCity,
+    departDate
+  },
+  flights,
+  options: {
+    airport,
+    flightTimes: [
+      {from: 0, to: 6},
+      {from: 6, to: 12},
+      {from: 12, to: 13},
+      {from: 13, to: 19},
+      {from: 19, to: 24},
+    ],
+    company
+  }
+}
 *
 * @apiUse RkNotFoundException
 */

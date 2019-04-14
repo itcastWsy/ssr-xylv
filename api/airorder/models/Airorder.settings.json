@@ -1,0 +1,43 @@
+{
+  "connection": "default",
+  "collectionName": "airorders",
+  "info": {
+    "name": "airorder",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "users": {
+      "default": "",
+      "type": "json"
+    },
+    "insurance": {
+      "default": "",
+      "type": "integer"
+    },
+    "contactName": {
+      "default": "",
+      "type": "string"
+    },
+    "contactPhone": {
+      "default": "",
+      "type": "string"
+    },
+    "invoice": {
+      "default": false,
+      "type": "boolean"
+    },
+    "price": {
+      "default": "",
+      "type": "float"
+    },
+    "air": {
+      "model": "air",
+      "via": "airorders"
+    }
+  }
+}
