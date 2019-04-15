@@ -31,33 +31,9 @@
       "default": "",
       "type": "float"
     },
-    "arr_date": {
-      "default": "",
-      "type": "date"
-    },
-    "arr_datetime": {
-      "default": "",
-      "type": "date"
-    },
-    "arr_time": {
-      "default": "",
-      "type": "date"
-    },
     "base_price": {
       "default": "",
       "type": "float"
-    },
-    "dep_date": {
-      "default": "",
-      "type": "date"
-    },
-    "dep_datetime": {
-      "default": "",
-      "type": "date"
-    },
-    "dep_time": {
-      "default": "",
-      "type": "date"
     },
     "dst_airport": {
       "default": "",
@@ -102,6 +78,34 @@
     "airorders": {
       "model": "airorder",
       "via": "air"
+    },
+    "flights": {
+      "default": "",
+      "type": "json"
+    },
+    "arr_date": {
+      "default": "",
+      "type": "string"
+    },
+    "dep_date": {
+      "default": "",
+      "type": "string"
+    },
+    "arr_datetime": {
+      "default": "",
+      "type": "string"
+    },
+    "arr_time": {
+      "default": "",
+      "type": "string"
+    },
+    "dep_datetime": {
+      "default": "",
+      "type": "string"
+    },
+    "dep_time": {
+      "default": "",
+      "type": "string"
     }
   }
 }

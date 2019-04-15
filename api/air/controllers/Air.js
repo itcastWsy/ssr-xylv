@@ -20,28 +20,57 @@ module.exports = {
   find: async (ctx) => {
 
     const {departCity, departCode, destCity, destCode, departDate} = ctx.query;
+    const delay = 2000 * 60;
+    let flightRes = [];
 
-    const args = {
-      "filter[departCity]": departCity,
-      "filter[departCode]": departCode,
-      "filter[destCity]": destCity,
-      "filter[destCode]": destCode,
-      "filter[departDate]": departDate
+    const _airs = await strapi.services.air.fetchAll({
+      org_city_name: departCity,
+      dst_city_name: destCity
+    });
+    const air = _airs.toJSON();
+
+    if(air && air.length ){
+      flightRes = air.map(v => {
+        return {
+          ...v,
+          arr_date: departDate,
+          dep_date: departDate,
+          arr_datetime: departDate + " " +v.arr_datetime.split(" ")[1],
+          dep_datetime: departDate + " " +v.dep_datetime.split(" ")[1]
+        }
+      });
+    }else{
+      const args = {
+        "filter[departCity]": departCity,
+        "filter[departCode]": departCode,
+        "filter[destCity]": destCity,
+        "filter[destCode]": destCode,
+        "filter[departDate]": departDate
+      }
+      const url = `http://www.mafengwo.cn/flight/rest/flightlist/?${querystring.stringify(args)}`;
+
+      const result = await fetch(url);
+      const res = await result.json();
+
+      if(!res.errno == 0){
+        return ctx.badRequest(null, res.error);
+      }
+
+      const {flights} = res.data.ex;
+
+      for(var i = 0; i < flights.length; i ++){
+        const {arrTime, correctness, depTime, dst_city_code, flight_share, fuel_tax_audlet, fuel_tax_child, meal, org_city_code, ota_id, plane_type, stop_num, ...flight} = flights[i];
+
+        const _newFlight = await strapi.services.air.add({...flight});
+        const newFlight = _newFlight.toJSON();
+        flightRes.push(newFlight);
+      }
     }
-    const url = `http://www.mafengwo.cn/flight/rest/flightlist/?${querystring.stringify(args)}`;
 
-    const result = await fetch(url);
-    const res = await result.json();
-
-    if(!res.errno == 0){
-      return ctx.badRequest(null, res.error);
-    }
-
-    const {flights} = res.data.ex;
-    const airport = [...new Set(flights.map(v => {
+    const airport = [...new Set(flightRes.map(v => {
       return v.org_airport_name;
     }))];
-    const company = [...new Set(flights.map(v => {
+    const company = [...new Set(flightRes.map(v => {
       return v.airline_name;
     }))]
 
@@ -51,7 +80,8 @@ module.exports = {
         destCity,
         departDate
       },
-      flights,
+      flights: flightRes,
+      total: flightRes.length,
       options: {
         airport,
         flightTimes: [
@@ -73,7 +103,24 @@ module.exports = {
    */
 
   findOne: async (ctx) => {
-    return strapi.services.air.fetch(ctx.params);
+
+    const _air = await strapi.services.air.fetch(ctx.params);
+
+    if(!_air){
+      return ctx.badRequest(null, '当前机票信息已过期');
+    }
+
+    const air = _air.toJSON();
+    const {seat_xid} = ctx.query;
+
+    const seatInfo = air.seat_infos.filter(v => {
+      return v.seat_xid === seat_xid;
+    })[0];
+
+    return {
+      ...air,
+      seat_infos: seatInfo
+    };
   },
 
   /**

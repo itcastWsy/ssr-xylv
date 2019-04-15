@@ -593,3 +593,25 @@
 *
 * @apiUse RkNotFoundException
 */
+
+/**
+* 
+* @api {get} /airs/:id 选择机票
+* @apiName airs
+* @apiGroup AIR
+*
+* @apiParam {number} /:id             机票id
+* @apiParam {String} seat_xid         座位id
+*
+* 
+* @apiSuccessExample 成功响应：
+{
+    "id": 2,
+    "org_city_name": "广州",
+    "dst_city_name": "上海",
+    "airline_name": "国航",
+    ...
+}
+*
+* @apiUse RkNotFoundException
+*/
