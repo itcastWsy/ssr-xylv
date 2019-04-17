@@ -615,3 +615,27 @@
 *
 * @apiUse RkNotFoundException
 */
+
+
+/**
+* 
+* @api {post} /airorders 提交机票订单
+* @apiName air orders
+* @apiGroup AIR
+*
+* @apiParam {Array}<Object{username,id}>    users             用户列表
+* @apiParam {Array}<Nunber>                 insurances        保险id
+* @apiParam {String}               contactName        联系人名字
+* @apiParam {String}               contactPhone       联系人电话
+* @apiParam {Boolean}              invoice            是否需要发票 
+* @apiParam {String}               seat_xid           座位id
+* @apiParam {Number}               air                航班id  
+* 
+* @apiSuccessExample 成功响应：
+{
+    "status": 0,
+    "message": "订单提交成功"
+}
+*
+* @apiUse RkNotFoundException
+*/

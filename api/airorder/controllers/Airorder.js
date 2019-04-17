@@ -49,7 +49,42 @@ module.exports = {
    */
 
   create: async (ctx) => {
-    return strapi.services.airorder.add(ctx.request.body);
+    const {insurances, seat_xid, ...props} = ctx.request.body;
+    let price = 0;
+
+    if(insurances){
+      for(let i = 0; i < insurances.length; i++){
+        const id = insurances[i];
+        const _insurance = await strapi.models.airinsurance.where({id}).fetch();
+        const insurance = _insurance.toJSON();
+        price += (insurance.price * props.users.length); 
+      }
+    }
+
+    const _air = await strapi.models.air.where({id: props.air}).fetch();
+    const air = _air.toJSON();
+
+    air.seat_infos && air.seat_infos.forEach(v => {
+      if(seat_xid !== v.seat_xid) return;
+
+      if(v.settle_price_child){
+        price += v.settle_price_child;
+      }else{
+        price += v.settle_price;
+      }
+    })
+
+    await strapi.services.airorder.add({
+      ...props,
+      insuranceIds: insurances,
+      price
+    });
+
+    return {
+      status: 0,
+      message: "订单提交成功"
+    };
+    
   },
 
   /**

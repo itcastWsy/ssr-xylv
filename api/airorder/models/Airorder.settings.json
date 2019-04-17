@@ -15,10 +15,6 @@
       "default": "",
       "type": "json"
     },
-    "insurance": {
-      "default": "",
-      "type": "integer"
-    },
     "contactName": {
       "default": "",
       "type": "string"
@@ -38,6 +34,10 @@
     "air": {
       "model": "air",
       "via": "airorders"
+    },
+    "insuranceIds": {
+      "default": "",
+      "type": "json"
     }
   }
 }

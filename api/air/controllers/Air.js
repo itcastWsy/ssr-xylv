@@ -40,31 +40,37 @@ module.exports = {
         }
       });
     }else{
-      const args = {
-        "filter[departCity]": departCity,
-        "filter[departCode]": departCode,
-        "filter[destCity]": destCity,
-        "filter[destCode]": destCode,
-        "filter[departDate]": departDate
+      // 防止第三方接口挂掉
+      try{
+        const args = {
+          "filter[departCity]": departCity,
+          "filter[departCode]": departCode,
+          "filter[destCity]": destCity,
+          "filter[destCode]": destCode,
+          "filter[departDate]": departDate
+        }
+        const url = `http://www.mafengwo.cn/flight/rest/flightlist/?${querystring.stringify(args)}`;
+        const result = await fetch(url);
+        const res = await result.json();
+
+        if(!res.errno == 0){
+          return ctx.badRequest(null, res.error);
+        }
+
+        const {flights} = res.data.ex;
+
+        for(var i = 0; i < flights.length; i ++){
+          const {arrTime, correctness, depTime, dst_city_code, flight_share, fuel_tax_audlet, fuel_tax_child, meal, org_city_code, ota_id, plane_type, stop_num, ...flight} = flights[i];
+
+          const _newFlight = await strapi.services.air.add({...flight});
+          const newFlight = _newFlight.toJSON();
+
+          flightRes.push(newFlight);
+        }
+      }catch(err){
+        // 第三方接口问题
       }
-      const url = `http://www.mafengwo.cn/flight/rest/flightlist/?${querystring.stringify(args)}`;
-
-      const result = await fetch(url);
-      const res = await result.json();
-
-      if(!res.errno == 0){
-        return ctx.badRequest(null, res.error);
-      }
-
-      const {flights} = res.data.ex;
-
-      for(var i = 0; i < flights.length; i ++){
-        const {arrTime, correctness, depTime, dst_city_code, flight_share, fuel_tax_audlet, fuel_tax_child, meal, org_city_code, ota_id, plane_type, stop_num, ...flight} = flights[i];
-
-        const _newFlight = await strapi.services.air.add({...flight});
-        const newFlight = _newFlight.toJSON();
-        flightRes.push(newFlight);
-      }
+      
     }
 
     const airport = [...new Set(flightRes.map(v => {
@@ -117,9 +123,13 @@ module.exports = {
       return v.seat_xid === seat_xid;
     })[0];
 
+    const _insurances = await strapi.models.airinsurance.fetchAll();
+    const insurances = _insurances.toJSON();
+
     return {
       ...air,
-      seat_infos: seatInfo
+      seat_infos: seatInfo,
+      insurances
     };
   },
 
