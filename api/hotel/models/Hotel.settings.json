@@ -67,8 +67,8 @@
     },
     "scenic": {
       "collection": "scenic",
-      "via": "hotels",
-      "dominant": true
+      "dominant": true,
+      "via": "hotels"
     },
     "comments": {
       "collection": "comment",

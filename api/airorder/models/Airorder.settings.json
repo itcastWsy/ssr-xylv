@@ -38,6 +38,10 @@
     "insuranceIds": {
       "default": "",
       "type": "json"
+    },
+    "account": {
+      "model": "account",
+      "via": "airorders"
     }
   }
 }

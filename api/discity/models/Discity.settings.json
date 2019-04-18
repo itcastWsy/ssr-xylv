@@ -34,6 +34,10 @@
     "hotels": {
       "collection": "hotel",
       "via": "city"
+    },
+    "posts": {
+      "collection": "post",
+      "via": "city"
     }
   }
 }

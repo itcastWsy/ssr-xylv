@@ -355,6 +355,38 @@
 
 /**
 * 
+* @api {get} /hotels/comments 获取酒店评论
+* @apiName Get Hotel Comments
+* @apiGroup COMMENT
+*
+* @apiParam {Number} hotel          酒店id
+* @apiParam {String} _sort          排序
+* @apiParam {Number} _limit         条数
+* @apiParam {Number} _start         开始数据（分页）
+* 
+* @apiSuccessExample 成功响应：
+{
+    "data": [
+        {
+            "id": 1,
+            "account": 1,
+            "content": "酒店环境很好",
+            "like": 1,
+            "likeIds": [],
+            "score": 4.5,
+            "hotel": 2,
+            "created_at": 1554368708175,
+            "updated_at": 1554705888282
+        }
+    ],
+    "total": 1
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+/**
+* 
 * @api {get} /comments/like 评论点赞
 * @apiName Hotel Comments Like
 * @apiGroup COMMENT
@@ -362,7 +394,7 @@
 * @apiHeader {String} Authorization token
 * @apiHeaderExample token请求头
 {
-    Authorization： Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTU0NzA5MDEzLCJleHAiOjE1NTczMDEwMTN9.rOOiugMSBZwPvEtFBV7f_gPnLOR90N5nDLWgh_G6R-0
+    Authorization： Bearer [token]
 }
 *
 * @apiParam {Number} id             评论id
@@ -387,7 +419,7 @@
 * @apiHeader {String} Authorization token
 * @apiHeaderExample token请求头
 {
-    Authorization： Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTU0NzA5MDEzLCJleHAiOjE1NTczMDEwMTN9.rOOiugMSBZwPvEtFBV7f_gPnLOR90N5nDLWgh_G6R-0
+    Authorization： Bearer [token]
 }
 *
 * @apiParam {String} content 评论内容
@@ -397,7 +429,10 @@
 * @apiParam {Float}  score.fancility  设施评分
 * @apiParam {Float}  score.all        总体评分
 * @apiParam {Array}  pics             图片
-* @apiParam {Number} hotel            酒店id
+*
+* @apiParam {Number} hotel            酒店id / 
+* @apiParam {Number} post             评论id
+*
 * @apiParam {Number} account          用户id
 * @apiParam {Number} follow           回复id
 *
@@ -508,7 +543,7 @@
 * @apiHeader {String} Authorization token
 * @apiHeaderExample token请求头
 {
-    Authorization： Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTU0NzA5MDEzLCJleHAiOjE1NTczMDEwMTN9.rOOiugMSBZwPvEtFBV7f_gPnLOR90N5nDLWgh_G6R-0
+    Authorization： [token]
 }
 *
 * @apiParam {files} files       评论id
@@ -623,8 +658,8 @@
 * @apiName air orders
 * @apiGroup AIR
 *
-* @apiParam {Array}<Object{username,id}>    users             用户列表
-* @apiParam {Array}<Nunber>                 insurances        保险id
+* @apiParam {Array}    users<Object{username,id}>             用户列表
+* @apiParam {Array}    insurances<Number>       保险id
 * @apiParam {String}               contactName        联系人名字
 * @apiParam {String}               contactPhone       联系人电话
 * @apiParam {Boolean}              invoice            是否需要发票 
@@ -635,6 +670,97 @@
 {
     "status": 0,
     "message": "订单提交成功"
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+/**
+* 
+* @api {post} /posts 新增文章
+* @apiName Add posts
+* @apiGroup POSTS
+*
+* @apiHeader {String} Authorization token
+* @apiHeaderExample token请求头
+{
+    Authorization： [token]
+}
+*
+* @apiParam {Text}         content            文章内容
+* @apiParam {String}       title              文章标题
+* @apiParam {Number}       scenic             景点id
+* @apiParam {Number}       postkind           文章分类id
+* @apiParam {Number}       city               城市id
+* 
+* @apiSuccessExample 成功响应：
+{
+    "status": 0,
+    "message": "订单提交成功",
+    data: {}
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+/**
+* 
+* @api {get} /postkinds 获取文章分类
+* @apiName Get post types
+* @apiGroup POSTS
+* 
+* @apiSuccessExample 成功响应：
+{
+ []
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+
+/**
+* 
+* @api {get} /posts/like 文章点赞
+* @apiName Posts Like
+* @apiGroup POSTS
+*
+* @apiHeader {String} Authorization token
+* @apiHeaderExample token请求头
+{
+    Authorization： Bearer [token]
+}
+*
+* @apiParam {Number} id             评论id
+* 
+* @apiSuccessExample 成功响应：
+{
+    id: 1
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+
+/**
+* 
+* @api {get} /posts/comments 获取酒店评论
+* @apiName Get Post Comments
+* @apiGroup POSTS
+*
+* @apiParam {Number} post           文章id
+* @apiParam {String} _sort          排序
+* @apiParam {Number} _limit         条数
+* @apiParam {Number} _start         开始数据（分页）
+* 
+* @apiSuccessExample 成功响应：
+{
+    "data": [
+        {
+            "id": 1,
+            ...
+        }
+    ],
+    "total": 1
 }
 *
 * @apiUse RkNotFoundException

@@ -14,6 +14,48 @@
     "content": {
       "default": "",
       "type": "text"
+    },
+    "scenic": {
+      "model": "scenic",
+      "via": "posts"
+    },
+    "account": {
+      "model": "account",
+      "via": "posts"
+    },
+    "postkind": {
+      "model": "postkind",
+      "via": "posts"
+    },
+    "banner": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "title": {
+      "default": "",
+      "type": "string"
+    },
+    "watch": {
+      "default": "",
+      "type": "integer"
+    },
+    "comments": {
+      "collection": "comment",
+      "via": "post"
+    },
+    "city": {
+      "model": "discity",
+      "via": "posts"
+    },
+    "like": {
+      "default": "",
+      "type": "integer"
+    },
+    "likeIds": {
+      "default": "",
+      "type": "json"
     }
   }
 }

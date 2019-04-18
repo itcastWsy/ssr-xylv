@@ -2,6 +2,22 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/posts/like",
+      "handler": "Post.like",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/posts/comments",
+      "handler": "Post.comments",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/posts",
       "handler": "Post.find",
       "config": {

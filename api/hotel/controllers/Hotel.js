@@ -12,8 +12,8 @@ module.exports = {
 
   comments: async ctx => {
     //const data = await strapi.models.comment.where(ctx.query).fetchAll();
-
-    ctx.query = {...ctx.query, level_contains: 1}
+    // type: 1 表示查找酒店的评论
+    ctx.query = {...ctx.query, level_contains: 1, type: 1}
 
     const comments = await strapi.services.comment.fetchAll(ctx.query);
     const total = await strapi.services.comment.count(ctx.query);
@@ -56,7 +56,6 @@ module.exports = {
   find: async (ctx) => {
 
     const {enterTime, leftTime, scenic, hotelasset, _limit, _start, ...props} = ctx.query;
-    
 
     // find hotels
     // 不连表查询
@@ -93,8 +92,6 @@ module.exports = {
           });
         }
 
-
-
         if(hotelasset && hotelassets){
           condition.hotelasset = 0;
           hotelassets.forEach(item => {
@@ -110,8 +107,6 @@ module.exports = {
           _condition += item;
         })
 
-
-        
         return _condition == Object.keys(condition).length;
       })
 

@@ -35,6 +35,14 @@
     "comments": {
       "collection": "comment",
       "via": "account"
+    },
+    "airorders": {
+      "collection": "airorder",
+      "via": "account"
+    },
+    "posts": {
+      "collection": "post",
+      "via": "account"
     }
   }
 }

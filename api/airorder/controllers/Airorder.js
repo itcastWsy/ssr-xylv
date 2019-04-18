@@ -77,7 +77,8 @@ module.exports = {
     await strapi.services.airorder.add({
       ...props,
       insuranceIds: insurances,
-      price
+      price,
+      account: ctx.state.user.id
     });
 
     return {

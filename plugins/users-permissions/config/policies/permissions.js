@@ -4,6 +4,7 @@ module.exports = async (ctx, next) => {
   let role;
 
   if (ctx.request && ctx.request.header && ctx.request.header.authorization) {
+
     try {
       const { _id, id } = await strapi.plugins['users-permissions'].services.jwt.getToken(ctx);
 
@@ -13,10 +14,9 @@ module.exports = async (ctx, next) => {
 
       ctx.state.user = await strapi.query('user', 'users-permissions').findOne({ _id, id });
 
-
       //console.log(!ctx.state.user, ctx.state.user.role.type !== "root")
       //把user替换为account
-      if(!ctx.state.user && ctx.state.user.role.type !== "root"){
+      if(!ctx.state.user){
         const user = await strapi.services.account.fetch({ _id, id });
         ctx.state.user = user.toJSON();
       }
