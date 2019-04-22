@@ -43,6 +43,10 @@
     "posts": {
       "collection": "post",
       "via": "account"
+    },
+    "starPosts": {
+      "default": "",
+      "type": "json"
     }
   }
 }

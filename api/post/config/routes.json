@@ -2,6 +2,14 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/posts/star",
+      "handler": "Post.star",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/posts/like",
       "handler": "Post.like",
       "config": {

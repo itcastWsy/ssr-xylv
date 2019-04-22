@@ -8,6 +8,34 @@
 
 module.exports = {
 
+  star: async ctx => {
+    let { id: uid, starPosts } = ctx.state.user;
+    const {id} = ctx.query;
+
+    if(!starPosts) starPosts = [];
+
+    if(!id){
+      return ctx.badRequest(null, '请输入文章id');
+    }
+
+    if(starPosts.indexOf(id) > -1){
+      return {
+        status: 0,
+        message: "已收藏"
+      }
+    }
+
+    await strapi.services.account.edit({
+      id: uid,
+      starPosts: [...starPosts, id]
+    });
+
+    return {
+      status: 0,
+      message: "收藏成功"
+    };
+  },
+
   like: async ctx => {
     const { id: uid } = ctx.state.user;
     const {id} = ctx.query;
@@ -83,7 +111,15 @@ module.exports = {
    */
 
   findOne: async (ctx) => {
-    return strapi.services.post.fetch(ctx.params);
+
+    const _res = await strapi.services.post.fetch(ctx.params);
+    
+    const res = _res.toJSON();
+
+    return await strapi.services.post.edit({
+      id: res.id,
+      watch: (res.watch || 0) + 1
+    }) ;
   },
 
   /**

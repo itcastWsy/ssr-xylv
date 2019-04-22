@@ -743,7 +743,7 @@
 
 /**
 * 
-* @api {get} /posts/comments 获取酒店评论
+* @api {get} /posts/comments 获取文章评论
 * @apiName Get Post Comments
 * @apiGroup POSTS
 *
@@ -761,6 +761,24 @@
         }
     ],
     "total": 1
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+
+/**
+* 
+* @api {get} /posts/star  收藏文章
+* @apiName Get Post Comments
+* @apiGroup POSTS
+*
+* @apiParam {Number} id       文章id
+* 
+* @apiSuccessExample 成功响应：
+{
+    "status": 0,
+    "message": "收藏成功"
 }
 *
 * @apiUse RkNotFoundException
