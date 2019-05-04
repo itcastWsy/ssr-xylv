@@ -34,6 +34,10 @@
     "hotels": {
       "collection": "hotel",
       "via": "province"
+    },
+    "sort": {
+      "default": "",
+      "type": "string"
     }
   }
 }

@@ -11,6 +11,76 @@ const querystring = require("querystring");
 
 module.exports = {
 
+  findCity: async ctx => {
+    const {name} = ctx.query;
+    const condition = {name_contains: name};
+
+    // 模糊搜索不能使用strapi.models
+    const provinces = await strapi.services.disprovince.fetchAll(condition);
+    const cities = await strapi.services.discity.fetchAll(condition);
+
+    const newProvinces = provinces.toJSON().filter(v => {
+      return v.name.substr(-1) === "市";
+    })
+
+    const res = [...newProvinces, ...cities.toJSON()];
+
+    const data = res.map(v => {
+      let { hotels, scenics, posts, ...props} = v;
+      return props;
+    })
+
+    ctx.body = {
+      data,
+      total: data.length
+    };
+  },
+
+  findCitySort: async ctx => {
+    const {name} = ctx.query;
+    const sortName = name.replace("市", "");
+
+    const province = await strapi.models.disprovince.where({name}).fetch();
+    const city = await strapi.models.discity.where({name}).fetch();
+
+    const _dest = province || city;
+
+    if(_dest){
+      const url = encodeURI(`https://www.mafengwo.cn/flight/rest/citySuggest/?filter[prefix]=${sortName}`);
+      //const url = `http://www.mafengwo.cn/flight/rest/flightlist/?${querystring.stringify(args)}`;
+      const result = await fetch(url);
+      const {data: { ex }, errno } = await result.json();
+      const dest = _dest.toJSON();
+
+      if(errno === 0 && !!ex[0]){
+        if(dest.level == 1){
+          await strapi.services.disprovince.edit({
+            ...dest, 
+            sort: ex[0].c
+          });
+        }
+        
+        if(dest.level === 2){
+          await strapi.services.discity.edit({
+            ...dest, 
+            sort:  ex[0].c
+          }) ;
+        }
+
+      }else{
+        return ctx.badRequest(null, '查询错误，请稍后再试');
+      }
+
+      ctx.body = {
+        data: ex[0].c,
+        status: 0
+      };
+  }else {
+       return ctx.badRequest(null, '城市名称不存在');
+    }
+  },
+
+
   /**
    * Retrieve air records.
    *

@@ -2,6 +2,22 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/airs/city",
+      "handler": "Air.findCity",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/airs/city_sort",
+      "handler": "Air.findCitySort",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/airs",
       "handler": "Air.find",
       "config": {
