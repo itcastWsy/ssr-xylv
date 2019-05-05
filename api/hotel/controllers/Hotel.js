@@ -27,7 +27,7 @@ module.exports = {
       data,
       total
     }
-  }, 
+  },
 
   options: async ctx => {
     const levels = await strapi.models.hotellevel.fetchAll();
@@ -48,7 +48,7 @@ module.exports = {
 
 
   /**
-   * Retrieve hotel records.  
+   * Retrieve hotel records.
    *
    * @return {Object|Array}
    */
@@ -67,16 +67,16 @@ module.exports = {
       _limit: _limit ? +_limit : 10,
       _start: _start ? +_start : 0
     };
-    
+
     let res = {};
 
-    if( (scenic || hotelasset )  && !ctx.query.id ){ 
+    if( (scenic || hotelasset )  && !ctx.query.id ){
       let hotels = await strapi.services.hotel.fetchAll(props);
       hotels = hotels.toJSON();
 
       const _hotels = hotels.filter(v => {
         const {
-          scenic: scenics, 
+          scenic: scenics,
           hotelassets
         } = v;
         let condition = {};
@@ -130,15 +130,18 @@ module.exports = {
       props.products = [
         {
           name: "携程",
-          price: v.price + _.random(1, 100, true).toFixed(2)
+          price: (v.price + _.random(1, 100, true)).toFixed(2),
+          bestType: '高级大床房A',
         },
         {
           name: "艺龙",
-          price: v.price + _.random(1, 100, true).toFixed(2)
+          price: (v.price + _.random(1, 100, true)).toFixed(2),
+          bestType: '高级大床房A',
         },
         {
           name: "Hotels.com",
-          price: v.price + _.random(1, 100, true).toFixed(2)
+          price: (v.price + _.random(1, 100, true)).toFixed(2),
+          bestType: '高级大床房A',
         }
       ]
       return props;
