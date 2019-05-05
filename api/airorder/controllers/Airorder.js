@@ -47,10 +47,38 @@ module.exports = {
    *
    * @return {Object}
    */
-
   create: async (ctx) => {
-    const {insurances, seat_xid, ...props} = ctx.request.body;
+    const {insurances, seat_xid, captcha, ...props} = ctx.request.body;
     let price = 0;
+
+    console.log(props.users)
+
+    if(props.users && props.users.length === 0 || !props.users[0].username){
+      return ctx.badRequest(null, '乘机人不能为空');
+    }
+
+    if(!props.contactName){
+      return ctx.badRequest(null, '联系人姓名不能为空');
+    }
+
+    if(!props.contactPhone){
+      return ctx.badRequest(null, '联系人手机不能为空');
+    }
+
+    if(!captcha){
+      return ctx.badRequest(null, '手机验证码不能为空');
+    }
+
+    // match captcha
+    const captchaCount = await strapi.services.captcha.count({ 
+      tel: props.contactPhone, 
+      code: captcha, 
+      // isValid: true
+    });
+
+    if(!captchaCount){
+      return ctx.badRequest(null, '验证码错误');
+    }
 
     if(insurances){
       for(let i = 0; i < insurances.length; i++){
@@ -67,25 +95,27 @@ module.exports = {
     air.seat_infos && air.seat_infos.forEach(v => {
       if(seat_xid !== v.seat_xid) return;
 
-      if(v.settle_price_child){
-        price += v.settle_price_child;
+      if(v.settle_price){
+        price += v.settle_price * props.users.length;
       }else{
-        price += v.settle_price;
+        price += v.org_settle_price * props.users.length;
       }
     })
+
+    price += air.airport_tax_audlet * props.users.length;
 
     await strapi.services.airorder.add({
       ...props,
       insuranceIds: insurances,
       price,
-      account: ctx.state.user.id
+      account: 1 // ctx.state.user.id
     });
 
     return {
       status: 0,
-      message: "订单提交成功"
+      message: "订单提交成功",
+      price
     };
-    
   },
 
   /**
