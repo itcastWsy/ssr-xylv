@@ -8,8 +8,23 @@
 
 const fetch = require('node-fetch');
 const querystring = require("querystring");
+const moment = require("moment")
 
 module.exports = {
+
+  /**
+  * 特价机票
+  */
+  sale: async ctx => {
+    return {
+      data: [
+        {departCity: "广州", departCode: "CAN", destCity: "上海", destCode: "SHA", departDate: moment().format("YYYY-MM-DD"), cover: "https://imgsrc.baidu.com/baike/pic/item/a71ea8d3fd1f41340d8f3dec281f95cad0c85ee3.jpg", price: 760},
+        {departCity: "广州", departCode: "CAN", destCity: "上海", destCode: "SHA", departDate: moment().format("YYYY-MM-DD"), cover: "https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D220/sign=d4e2f29522381f309a198aab99004c67/6a63f6246b600c33cd891e65104c510fd8f9a1af.jpg", price: 760},
+        {departCity: "广州", departCode: "CAN", destCity: "上海", destCode: "SHA", departDate: moment().format("YYYY-MM-DD"), cover: "https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D220/sign=9154c841bcfd5266a32b3b169b199799/3812b31bb051f8199687c7e0d0b44aed2f73e7fe.jpg", price: 760},
+        {departCity: "广州", departCode: "CAN", destCity: "上海", destCode: "SHA", departDate: moment().format("YYYY-MM-DD"), cover: "https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D220/sign=a1b035c61a38534388cf8023a312b01f/9c16fdfaaf51f3de20157fce9eeef01f3b2979f1.jpg", price: 760},
+      ]
+    }
+  },
 
   findCity: async ctx => {
     const {name} = ctx.query;

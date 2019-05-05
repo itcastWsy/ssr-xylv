@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/airs/sale",
+      "handler": "Air.sale",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/airs/city_sort",
       "handler": "Air.findCitySort",
       "config": {
