@@ -114,7 +114,7 @@ module.exports = {
     return {
       status: 0,
       message: "订单提交成功",
-      price
+      price: price
     };
   },
 
