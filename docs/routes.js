@@ -106,6 +106,25 @@
 
 /**
 * 
+* @api {get} /cities 查找城市
+* @apiName getCities
+* @apiGroup Address
+*
+*
+* @apiParam {String} name 城市名称
+* 
+* @apiSuccessExample 成功响应：
+{
+    data: ,
+    total: 100
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+
+/**
+* 
 * @api {get} /hotels 酒店详情
 * @apiName Hotels
 * @apiGroup HOTEL
@@ -594,8 +613,26 @@
 
 /**
 * 
+* @api {get} /airs/city 获取机票城市
+* @apiName getAirsCity
+* @apiGroup AIR
+*
+* @apiParam {String} departCity       出发城市
+*
+* @apiSuccessExample 成功响应：
+{
+  data:;
+  status: 0
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+
+/**
+* 
 * @api {get} /airs 获取机票
-* @apiName airs
+* @apiName getAirs
 * @apiGroup AIR
 *
 * @apiParam {String} departCity       出发城市
@@ -628,6 +665,7 @@
 *
 * @apiUse RkNotFoundException
 */
+
 
 /**
 * 

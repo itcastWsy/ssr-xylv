@@ -38,6 +38,10 @@
     "posts": {
       "collection": "post",
       "via": "city"
+    },
+    "sort": {
+      "default": "",
+      "type": "string"
     }
   }
 }
