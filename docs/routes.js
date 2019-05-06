@@ -115,7 +115,28 @@
 * 
 * @apiSuccessExample 成功响应：
 {
-    data: ,
+    data: [{
+        ...,
+        scenics: [] // 景点，展示在酒店的搜索的区域位置
+    }],
+    total: 100
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+/**
+* 
+* @api {get} /province/search? 查找省份下的城市
+* @apiName getProvince
+* @apiGroup Address
+*
+*
+* @apiParam {Number} id 省份id
+* 
+* @apiSuccessExample 成功响应：
+{
+    data: {},
     total: 100
 }
 *
