@@ -55,7 +55,16 @@ module.exports = {
 
   find: async (ctx) => {
 
-    const {enterTime, leftTime, scenic, hotelasset, _limit, _start, ...props} = ctx.query;
+    const {enterTime, leftTime, /*scenic, hotelasset, */_limit, _start, ...others} = ctx.query;
+    const linkParmas = {} // 连表查询的参数
+    const props = _.omitBy(others, (v, k) => {
+      const matchs = k.match(/(scenic|hotelasset)(_\w+)?/)
+      if (matchs) {
+        linkParmas[matchs[1]] = Array.isArray(v) ? v : [v]
+        return true
+      }
+    })
+    const {scenic, hotelasset} = linkParmas
 
     // find hotels
     // 不连表查询
@@ -86,7 +95,7 @@ module.exports = {
         if(scenic && scenics){
           condition.scenic = 0;
           scenics.forEach(item => {
-            if(item.id == scenic){
+            if(scenic.includes(item.id.toString())){
               condition.scenic = 1;
             }
           });
@@ -95,7 +104,7 @@ module.exports = {
         if(hotelasset && hotelassets){
           condition.hotelasset = 0;
           hotelassets.forEach(item => {
-            if(item.id == hotelasset){
+            if(hotelasset.includes(item.id.toString())){
               condition.hotelasset = 1;
             }
           });
@@ -116,7 +125,13 @@ module.exports = {
       }
     }else{
       const hotels = await strapi.services.hotel.fetchAll(defaultProps);
-      const total = await strapi.services.hotel.count(props);
+      let total
+      try {
+        total = await strapi.services.hotel.count(props);
+      } catch(e) {
+        const all = await strapi.services.hotel.fetchAll(props);
+        total = all.toJSON().length
+      }
 
       res = {
         data: hotels.toJSON(),
@@ -130,17 +145,17 @@ module.exports = {
       props.products = [
         {
           name: "携程",
-          price: (v.price + _.random(1, 100, true)).toFixed(2),
+          price: parseInt(v.price + _.random(1, 100, true), 10),
           bestType: '高级大床房A',
         },
         {
           name: "艺龙",
-          price: (v.price + _.random(1, 100, true)).toFixed(2),
+          price: parseInt(v.price + _.random(1, 100, true), 10),
           bestType: '高级大床房A',
         },
         {
           name: "Hotels.com",
-          price: (v.price + _.random(1, 100, true)).toFixed(2),
+          price: parseInt(v.price + _.random(1, 100, true), 10),
           bestType: '高级大床房A',
         }
       ]
