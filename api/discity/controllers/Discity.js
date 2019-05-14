@@ -22,12 +22,13 @@ module.exports = {
     const condition = {name_contains: name};
 
     // 模糊搜索不能使用strapi.models
-    const provinces = await strapi.services.disprovince.fetchAll(condition);
+    //const provinces = await strapi.services.disprovince.fetchAll(condition);
     const cities = await strapi.services.discity.fetchAll(condition);
-    const countries = await strapi.services.discountry.fetchAll(condition);
+    //const countries = await strapi.services.discountry.fetchAll(condition);
 
-    const res = [...provinces.toJSON(), ...cities.toJSON(), ...countries.toJSON()];
-
+    //const res = [...provinces.toJSON(), ...cities.toJSON(), ...countries.toJSON()];
+    const res = cities.toJSON();
+    
     const data = res.map(v => {
       let { hotels, ...props} = v;
       return props;
