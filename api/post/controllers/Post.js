@@ -6,8 +6,19 @@
  * @description: A set of functions called "actions" for managing `Post`.
  */
 
-module.exports = {
+async function getCommentByFollow(comment){
 
+    let {followed, post, hotel, ...props} = comment;
+
+    if(comment.follow && comment.follow.id){
+      const _cmt = await strapi.services.comment.fetch({id: comment.follow.id});
+      const cmt = _cmt.toJSON();
+      props.parent = await getCommentByFollow(cmt);
+    }
+  return props;
+}
+
+module.exports = {
   star: async ctx => {
     let { id: uid, starPosts } = ctx.state.user;
     const {id} = ctx.query;
@@ -72,21 +83,32 @@ module.exports = {
   },
 
   comments: async ctx => {
+
+    // 1.0 正常查找评论
     //const data = await strapi.models.comment.where(ctx.query).fetchAll();
     // type: 2 表示查找文章的评论
-    ctx.query = {...ctx.query, level_contains: 1, type: 2};
+    // ctx.query = {...ctx.query, level_contains: 1, type: 2};
 
-    const comments = await strapi.services.comment.fetchAll(ctx.query);
-    const total = await strapi.services.comment.count(ctx.query);
+    // const comments = await strapi.services.comment.fetchAll(ctx.query);
+    // const total = await strapi.services.comment.count(ctx.query);
 
-    const data = comments.toJSON().map(v => {
-      v.post = v.post.id;
-      return v;
-    });
+    // const data = comments.toJSON().map(v => {
+    //   v.post = v.post.id;
+    //   return v;
+    // });
+
+    ctx.query = {...ctx.query, type: 2};
+    const _res = await strapi.services.comment.fetchAll(ctx.query);
+    const res = _res.toJSON();
+    let data = [];
+
+    for(let i = res.length, item; item = res[--i];){
+        data.push(await getCommentByFollow(item));
+    }
 
     return {
       data,
-      total
+      total: data.length
     }
   },
 

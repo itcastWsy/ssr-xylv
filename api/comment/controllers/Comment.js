@@ -89,8 +89,13 @@ module.exports = {
 
     const {hotel: id, post: pid, score, follow} = ctx.request.body;
 
-    const level = !follow ? 1 : 2;
-    ctx.request.body.level = level;
+    ctx.request.body.account = ctx.state.user.id;
+    ctx.request.body.level = 1;
+
+    if(follow){
+      const parent = await strapi.services.comment.fetch({id: follow});
+      ctx.request.body.level = +parent.toJSON().level + 1;
+    }
 
     if(id){
       ctx.request.body.type = 1;
@@ -111,7 +116,6 @@ module.exports = {
 
       /**
         (4.4+4+4.6+4.2+4.9) / 5 = 4.42
-
         (4.4+4+4.6+4.2) / 4 = 4.3
         (4.9-4.3) / 5 = 0.12
         (4.9-4.3) / 5 + 4.3 = 4.42

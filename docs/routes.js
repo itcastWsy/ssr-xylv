@@ -473,7 +473,6 @@
 * @apiParam {Number} hotel            酒店id / 
 * @apiParam {Number} post             评论id
 *
-* @apiParam {Number} account          用户id
 * @apiParam {Number} follow           回复id
 *
 * @apiExample 请求例子
