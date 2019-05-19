@@ -34,6 +34,14 @@
     },
     {
       "method": "GET",
+      "path": "/posts/recommend",
+      "handler": "Post.recommend",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/posts/count",
       "handler": "Post.count",
       "config": {

@@ -56,7 +56,7 @@ module.exports = {
     const {tel} = ctx.request.body;
 
     if(!tel){
-      return ctx.badRequest(null, 'Please provide your phone number');
+      return ctx.badRequest(null, '请输入手机号码');
     }
 
     // check last captcha
@@ -66,7 +66,7 @@ module.exports = {
     });
 
     if(validCount > 2){
-      return ctx.badRequest(null, 'try again later');
+      return ctx.badRequest(null, '访问次数过多，请稍后再试');
     }
 
     // verifition code
@@ -105,6 +105,7 @@ module.exports = {
       });
 
     }catch(err){
+      console.log(err)
       if(res.error_code){
         return ctx.badRequest(null, 'Please contact customer service');
       }

@@ -69,7 +69,7 @@ module.exports = {
     }
 
     ctx.send({
-      jwt: strapi.plugins['users-permissions'].services.jwt.issue(_.pick(user.toJSON ? user.toJSON() : user, ['_id', 'id'])),
+      token: strapi.plugins['users-permissions'].services.jwt.issue(_.pick(user.toJSON ? user.toJSON() : user, ['_id', 'id'])),
       user: _.omit(user.toJSON ? user.toJSON() : user, ['password', 'resetPasswordToken'])
     });
   },
@@ -126,16 +126,18 @@ module.exports = {
 
     // is mobile number
     if(!isMobile(params.username)){
-      return ctx.badRequest(null, 'Please provide your correct format phone number');
+      return ctx.badRequest(null, '手机号码格式错误');
     }
 
     const role = await strapi.plugins['users-permissions'].models.role.forge({ type: settings.default_role  }).fetch();
 
     if (!role) {
-      return ctx.badRequest(null, 'Impossible to find the root role.');
+      // 用户角色错误 
+      return ctx.badRequest(null, '用户注册失败');
     }
 
     params.role = role._id || role.id;
+    params.defaultAvatar = "/assets/images/avatar.jpg";
 
     // find account
     const {captcha, ...paramsProps} = params;
@@ -143,7 +145,7 @@ module.exports = {
     const account = await strapi.models.account.where(paramsProps).fetch();
 
     if(account){
-      return ctx.badRequest(null, 'username is already taken.');
+      return ctx.badRequest(null, '用户名已经存在');
     }
 
     // match captcha
@@ -154,23 +156,24 @@ module.exports = {
     });
 
     if(!captchaCount){
-      return ctx.badRequest(null, 'captcha code is error or delay.');
+      return ctx.badRequest(null, '手机验证码错误.');
     }
 
     try{
-      const user = await strapi.services.account.add(paramsProps);
+      const _user = await strapi.services.account.add(paramsProps);
+      const user = await strapi.models.account.where({id: _user.toJSON().id}).fetch();
 
-      const jwt = strapi.plugins['users-permissions'].services.jwt.issue(
+      const token = strapi.plugins['users-permissions'].services.jwt.issue(
         _.pick(user.toJSON ? user.toJSON() : user, ['_id', 'id'])
       );
 
       ctx.send({
-        jwt,
+        token,
         user: _.omit(user.toJSON ? user.toJSON() : user, ['password', 'resetPasswordToken'])
       });
 
     }catch(err){
-      ctx.badRequest(null, 'Auth.error.register');
+      ctx.badRequest(null, '注册失败');
     }
   },
 

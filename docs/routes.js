@@ -464,110 +464,21 @@
 *
 * @apiParam {String} content 评论内容
 * @apiParam {Object} score   评分对象
-* @apiParam {Float}  score.location   位置评分
-* @apiParam {Float}  score.service    服务评分
-* @apiParam {Float}  score.fancility  设施评分
-* @apiParam {Float}  score.all        总体评分
+* @apiParam {Float} score.location   位置评分
+* @apiParam {Float} score.service    服务评分
+* @apiParam {Float} score.fancility  设施评分
+* @apiParam {Float} score.all        总体评分
 * @apiParam {Array}  pics             图片
 *
 * @apiParam {Number} hotel            酒店id / 
 * @apiParam {Number} post             评论id
 *
 * @apiParam {Number} follow           回复id
-*
-* @apiExample 请求例子
-{
-    "content": "postman 评论2",
-    "like": 1,
-    "likeIds": [1],
-    "score": {"service": 4, "location": 4.2},
-    "pics": [
-        {
-            "created_at": 1554780485209,
-            "ext": ".jpeg",
-            "hash": "a067aac50f3c4224bfb060f7c81dc54c",
-            "id": 3,
-            "mime": "image/jpeg",
-            "name": "wKgBZ1laE5GAH0GWAAGFZyv3znE68.jpeg",
-            "provider": "local",
-            "public_id": null,
-            "related": [],
-            "sha256": "xn-vndROmvVAbUIqrahe0zAizgAn2S1cEKcA6_ubcKE",
-            "size": "99.96",
-            "updated_at": 1554780485233,
-            "url": "/uploads/a067aac50f3c4224bfb060f7c81dc54c.jpeg"
-        }
-    ],
-    "account": 1,
-    "hotel": 1
-    
-} 
 * 
 * @apiSuccessExample 成功响应：
 {
-    "id": 7,
-    "account": {
-        "id": 1,
-        "username": "13312882474",
-        "password": "123123",
-        "email": null,
-        "role": 2,
-        "nickname": "my",
-        "created_at": 1553587751614,
-        "updated_at": 1553587751627
-    },
-    "content": "postman 评论2",
-    "like": 1,
-    "likeIds": [
-        1
-    ],
-    "score": {
-        "service": 4,
-        "location": 4.2
-    },
-    "hotel": {
-        "id": 1,
-        "name": "7天连锁-棠下店",
-        "enName": "seven day - tang xia",
-        "isHot": 1,
-        "score": 3.4,
-        "location": {},
-        "summary": "7天连锁-国内最大的连锁酒店",
-        "enterTime": "2019-04-01 00:00:00",
-        "leftTime": "2019-04-11 00:00:00",
-        "buildTime": "2019-04-04 00:00:00",
-        "lastBuildTime": "2019-04-18 00:00:00",
-        "roomCount": 100,
-        "province": 18,
-        "city": 3,
-        "hotellevel": 1,
-        "hoteltype": 1,
-        "hotelbrand": 1,
-        "price": 200,
-        "country": 2046,
-        "created_at": 1554196236247,
-        "updated_at": 1554514582265
-    },
-    "follow": null,
-    "created_at": 1554782672015,
-    "updated_at": 1554782672033,
-    "pics": [
-        {
-            "id": 3,
-            "name": "wKgBZ1laE5GAH0GWAAGFZyv3znE68.jpeg",
-            "hash": "a067aac50f3c4224bfb060f7c81dc54c",
-            "sha256": "xn-vndROmvVAbUIqrahe0zAizgAn2S1cEKcA6_ubcKE",
-            "ext": ".jpeg",
-            "mime": "image/jpeg",
-            "size": "99.96",
-            "url": "/uploads/a067aac50f3c4224bfb060f7c81dc54c.jpeg",
-            "provider": "local",
-            "public_id": null,
-            "created_at": 1554780485209,
-            "updated_at": 1554780485233
-        }
-    ],
-    "followed": []
+    "status": 0,
+    "message": ""
 }
 *
 * @apiUse RkNotFoundException
@@ -735,6 +646,40 @@
 
 /**
 * 
+* @api {get} /posts 文章列表
+* @apiName get posts
+* @apiGroup POSTS
+*
+* @apiParam {Number | String}       city               城市id | 城市名称
+* 
+* @apiSuccessExample 成功响应：
+{
+    "data": {},
+    "total": 0
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+/**
+* 
+* @api {get} /posts 文章详情
+* @apiName get posts detail
+* @apiGroup POSTS
+*
+* @apiParam {Number}       id             文章id
+* @apiSuccessExample 成功响应：
+{
+    ...文章详情
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+
+
+/**
+* 
 * @api {post} /posts 新增文章
 * @apiName Add posts
 * @apiGroup POSTS
@@ -742,20 +687,18 @@
 * @apiHeader {String} Authorization token
 * @apiHeaderExample token请求头
 {
-    Authorization： [token]
+    Authorization： Bearer [token]
 }
 *
 * @apiParam {Text}         content            文章内容
 * @apiParam {String}       title              文章标题
-* @apiParam {Number}       scenic             景点id
-* @apiParam {Number}       postkind           文章分类id
-* @apiParam {Number}       city               城市id
+* @apiParam {Number}       city               城市id | 城市名称
 * 
 * @apiSuccessExample 成功响应：
 {
     "status": 0,
-    "message": "订单提交成功",
-    data: {}
+    "message": "文章新增成功",
+    "data": {}
 }
 *
 * @apiUse RkNotFoundException
@@ -828,8 +771,32 @@
 /**
 * 
 * @api {get} /posts/star  收藏文章
-* @apiName Get Post Comments
+* @apiName Star Posts
 * @apiGroup POSTS
+*
+* @apiHeader {String} Authorization token
+* @apiHeaderExample token请求头
+{
+    Authorization： Bearer [token]
+}
+*
+* @apiParam {Number} id       文章id
+* 
+* @apiSuccessExample 成功响应：
+{
+    "status": 0,
+    "message": "收藏成功"
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+/**
+* 
+* @api {get} /posts/recommend  推荐文章
+* @apiName Get Recommend Post 
+* @apiGroup POSTS
+*
 *
 * @apiParam {Number} id       文章id
 * 

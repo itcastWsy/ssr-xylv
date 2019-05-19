@@ -28,7 +28,7 @@
       "via": "posts"
     },
     "banner": {
-      "model": "file",
+      "collection": "file",
       "via": "related",
       "plugin": "upload",
       "required": false
@@ -38,7 +38,7 @@
       "type": "string"
     },
     "watch": {
-      "default": "",
+      "default": 0,
       "type": "integer"
     },
     "comments": {
@@ -50,12 +50,16 @@
       "via": "posts"
     },
     "like": {
-      "default": "",
+      "default": 0,
       "type": "integer"
     },
     "likeIds": {
       "default": "",
       "type": "json"
+    },
+    "cityName": {
+      "default": "",
+      "type": "string"
     }
   }
 }

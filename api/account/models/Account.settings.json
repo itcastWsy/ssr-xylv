@@ -47,6 +47,16 @@
     "starPosts": {
       "default": "",
       "type": "json"
+    },
+    "avatar": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "defaultAvatar": {
+      "default": "",
+      "type": "string"
     }
   }
 }

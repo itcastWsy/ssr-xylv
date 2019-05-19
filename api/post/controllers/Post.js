@@ -6,6 +6,10 @@
  * @description: A set of functions called "actions" for managing `Post`.
  */
 
+ // 获取图片
+let imgReg = /<img.*?(?:>|\/>)/gi;
+let srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+
 async function getCommentByFollow(comment){
 
     let {followed, post, hotel, ...props} = comment;
@@ -30,10 +34,7 @@ module.exports = {
     }
 
     if(starPosts.indexOf(id) > -1){
-      return {
-        status: 0,
-        message: "已收藏"
-      }
+      return ctx.badRequest(null, '已收藏');
     }
 
     await strapi.services.account.edit({
@@ -52,7 +53,7 @@ module.exports = {
     const {id} = ctx.query;
 
     if(!id){
-      return ctx.badRequest(null, 'must be provoid post id.');
+      return ctx.badRequest(null, '必须提供文章id');
     }
 
     let res = await strapi.services.post.fetch({id});
@@ -63,7 +64,7 @@ module.exports = {
     }
 
     if(res.likeIds.indexOf(uid) > -1){
-      return ctx.badRequest(null, 'user is already like.');
+      return ctx.badRequest(null, '用户已经点赞');
     }else{
       res.likeIds.push(uid);
     }
@@ -97,18 +98,23 @@ module.exports = {
     //   return v;
     // });
 
-    ctx.query = {...ctx.query, type: 2};
+    ctx.query = { _sort: "created_at:desc",...ctx.query, type: 2};
     const _res = await strapi.services.comment.fetchAll(ctx.query);
-    const res = _res.toJSON();
+    const res = _res.toJSON().reverse();
     let data = [];
 
     for(let i = res.length, item; item = res[--i];){
         data.push(await getCommentByFollow(item));
     }
 
+    // total
+    const {_start, _limit, ...queryProps} = ctx.query;
+    const _totalComments = await strapi.services.comment.fetchAll(queryProps);
+    const total = _totalComments.toJSON().length;
+
     return {
       data,
-      total: data.length
+      total
     }
   },
 
@@ -119,10 +125,58 @@ module.exports = {
    */
 
   find: async (ctx) => {
-    if (ctx.query._q) {
-      return strapi.services.post.search(ctx.query);
-    } else {
-      return strapi.services.post.fetchAll(ctx.query);
+
+    const {city} = ctx.query;
+    let reg = new RegExp("[\\u4E00-\\u9FFF]+","g");
+
+    if(reg.test(city)){
+      const _city = await strapi.services.discity.fetchAll({name_contains: city})
+      const cityData = _city.toJSON()[0];
+
+      if(cityData){
+        ctx.query.city = cityData.id;
+      }
+    }
+
+    const _posts = await strapi.services.post.fetchAll(ctx.query);
+    const posts = _posts.toJSON();
+
+    const data = posts.map(v => ({
+      ...v,
+      summary: v.content.replace(/<\/?.+?>/g,""),
+      images: v.content.match(imgReg).map(img => img.match(srcReg)[1])
+    }))
+
+    // total
+    const {_limit, _start, ...queryProps} = ctx.query;
+    const _totalPosts = await strapi.services.post.fetchAll(queryProps);
+    const total = _totalPosts.toJSON().length;
+
+    return {
+      data,
+      total
+    }
+  },
+
+  recommend: async ctx => {
+    const _posts = await strapi.models.post.fetchAll({
+      _start: 0,
+      _limit: 5,
+      _sort: "created_at:desc"
+    });
+    const posts = _posts.toJSON().reverse();
+
+    if(posts.length > 5){
+      posts.length = 5;
+    }
+
+    const data = posts.map(v => ({
+      ...v,
+      images: v.content.match(imgReg).map(img => img.match(srcReg)[1])
+    }))
+
+    return {
+      data
     }
   },
 
@@ -162,12 +216,37 @@ module.exports = {
 
   create: async (ctx) => {
 
-    const account = ctx.state.user.id;
+    if(!ctx.state.user){
+      return ctx.badRequest(null, '当前用户未登陆');
+    }
 
+    const account = ctx.state.user.id;
+    const {city, ...bodyProps} = ctx.request.body;
+    let _city;
+
+    if(typeof city === "string"){
+      _city = await strapi.services.discity.fetchAll({name_contains: city})
+    }
+
+    if(typeof city === "number"){
+      _city = await strapi.models.discity.where({id: city}).fetch();
+    }
+
+    let cityData = _city.toJSON();
+
+    if(Array.isArray(cityData)){
+      cityData = cityData[0];
+    }
+
+    if(!cityData){
+      return ctx.badRequest(null, '请选择正确的城市名称');
+    }
 
     const data = await strapi.services.post.add({
-      ...ctx.request.body,
-      account
+      ...bodyProps,
+      account,
+      city: cityData.id,
+      cityName: cityData.name
     });
 
     return {

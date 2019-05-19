@@ -146,7 +146,15 @@ module.exports = {
       ctx.request.body.type = 2;
     }
 
-    return strapi.services.comment.add(ctx.request.body);
+    try{
+      await strapi.services.comment.add(ctx.request.body);
+      return {
+        status: 0,
+        message: "提交成功"
+      }
+    }catch(err){
+      return badRequest(null, err.response);
+    }
   },
 
   /**
