@@ -13,7 +13,7 @@ module.exports = {
     const {id} = ctx.query;
 
     if(!id){
-      return ctx.badRequest(null, 'must be provoid comment id.');
+      return ctx.badRequest(null, '点赞失败，未找到该评论');
     }
 
     let res = await strapi.services.comment.fetch({id});
@@ -25,7 +25,7 @@ module.exports = {
     }
 
     if(res.likeIds.indexOf(uid) > -1){
-      return ctx.badRequest(null, 'user is already like.');
+      return ctx.badRequest(null, '已经点赞');
     }else{
       res.likeIds.push(uid);
     }

@@ -2,6 +2,14 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/posts/cities",
+      "handler": "Post.cities",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/posts/star",
       "handler": "Post.star",
       "config": {

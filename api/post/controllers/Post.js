@@ -11,7 +11,6 @@ let imgReg = /<img.*?(?:>|\/>)/gi;
 let srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
 
 async function getCommentByFollow(comment){
-
     let {followed, post, hotel, ...props} = comment;
 
     if(comment.follow && comment.follow.id){
@@ -23,6 +22,53 @@ async function getCommentByFollow(comment){
 }
 
 module.exports = {
+  cities: async ctx => {
+    return {
+      data: [
+        {
+          type: "热门城市",
+          children: [
+            {city: "北京", desc: "世界著名古都和现代化国际城市"},
+            {city: "广州", desc: "粤港澳大湾区、泛珠江三角洲经济区"},
+            {city: "上海", desc: "长江入海口，东隔东中国海"},
+            {city: "成都", desc: "国家历史文化名城"},
+            {city: "西安", desc: "中国国际形象最佳城市之一"}
+          ]
+        },
+        {
+          type: "推荐城市",
+          children: [
+            {city: "青岛", desc: "滨海度假旅游城市"},
+            {city: "杭州", desc: "西湖十景"},
+            {city: "深圳", desc: "世界影响力的创新创意之都"},
+            {city: "广州", desc: "粤港澳大湾区、泛珠江三角洲经济区"},
+            {city: "成都", desc: "国家历史文化名城"}
+          ]
+        },
+        {
+          type: "奔向海岛",
+          children: [
+            {city: "秦皇岛", desc: "驰名中外的旅游休闲胜地"},
+            {city: "青岛", desc: "滨海度假旅游城市"},
+            {city: "珠海", desc: "浪漫之城，百岛之市"},
+            {city: "深圳", desc: "世界影响力的创新创意之都"},
+            {city: "海口", desc: "海滨自然旖旎风光"}
+          ]
+        },
+        {
+          type: "主题推荐",
+          children: [
+            {city: "海口", desc: "海滨自然旖旎风光"},
+            {city: "广州", desc: "粤港澳大湾区、泛珠江三角洲经济区"},
+            {city: "上海", desc: "长江入海口，东隔东中国海"},
+            {city: "珠海", desc: "浪漫之城，百岛之市"},
+            {city: "西安", desc: "中国国际形象最佳城市之一"}
+          ]
+        }
+      ]
+    }
+  },
+
   star: async ctx => {
     let { id: uid, starPosts } = ctx.state.user;
     const {id} = ctx.query;
@@ -98,6 +144,7 @@ module.exports = {
     //   return v;
     // });
 
+    // 2.0 
     ctx.query = { _sort: "created_at:desc",...ctx.query, type: 2};
     const _res = await strapi.services.comment.fetchAll(ctx.query);
     const res = _res.toJSON().reverse();
@@ -125,7 +172,6 @@ module.exports = {
    */
 
   find: async (ctx) => {
-
     const {city} = ctx.query;
     let reg = new RegExp("[\\u4E00-\\u9FFF]+","g");
 
@@ -187,9 +233,7 @@ module.exports = {
    */
 
   findOne: async (ctx) => {
-
     const _res = await strapi.services.post.fetch(ctx.params);
-    
     const res = _res.toJSON();
 
     return await strapi.services.post.edit({
@@ -215,7 +259,6 @@ module.exports = {
    */
 
   create: async (ctx) => {
-
     if(!ctx.state.user){
       return ctx.badRequest(null, '当前用户未登陆');
     }

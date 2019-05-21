@@ -17,6 +17,30 @@
  *
  */
 
+
+/**
+* 
+* @api {get}  /  接口统一说明
+* @apiGroup A
+*
+* @apiExample  接口统一说明
+* 接口地址： http://localhost:1337
+*
+* 分页查询条件： 
+* {
+*    _start: 默认0,
+*    _limit: 获取条数
+*    _sort: 排序
+* }
+* 
+* 访问需要登录授权接口：
+* 需要添加头信息Authorization
+* {
+*    Authorization： Bearer [token]
+* }
+*/
+
+
 /**
 * 
 * @api {post} /accounts/login 登录
@@ -650,11 +674,29 @@
 * @apiName get posts
 * @apiGroup POSTS
 *
-* @apiParam {Number | String}       city               城市id | 城市名称
+* @apiParam {Number}       city        城市id | 城市名称
 * 
 * @apiSuccessExample 成功响应：
 {
     "data": {},
+    "total": 0
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+/**
+* 
+* @api {get} /posts/cities 城市菜单列表
+* @apiName get posts cities
+* @apiGroup POSTS
+* 
+* @apiSuccessExample 成功响应：
+{
+    "data": [
+        type: ""        // 主题类型
+        children: []    // 城市列表 
+    ],
     "total": 0
 }
 *
