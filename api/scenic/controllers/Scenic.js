@@ -8,6 +8,18 @@
 
 module.exports = {
 
+  banners: async ctx => {
+    return {
+      data:[
+        {url: "/assets/images/th01.jfif", desc: "图片来自于bing,不做商业作用"},
+        {url: "/assets/images/th02.jfif", desc: "图片来自于bing,不做商业作用"},
+        {url: "/assets/images/th03.jfif", desc: "图片来自于bing,不做商业作用"},
+        {url: "/assets/images/th04.jfif", desc: "图片来自于bing,不做商业作用"},
+      ],
+      total: 5
+    }
+  },
+
   /**
    * Retrieve scenic records.
    *

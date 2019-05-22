@@ -2,6 +2,14 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/scenics/banners",
+      "handler": "Scenic.banners",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/scenics",
       "handler": "Scenic.find",
       "config": {

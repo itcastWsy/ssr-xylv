@@ -130,6 +130,24 @@
 
 /**
 * 
+* @api {get} /scenics/banners 查找城市
+* @apiName get index banners
+* @apiGroup Index
+* 
+* @apiSuccessExample 成功响应：
+{
+    data: [{
+        url: "", // 图片链接
+        desc: "", // 图片描述
+    }],
+    total: 100
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+/**
+* 
 * @api {get} /cities 查找城市
 * @apiName getCities
 * @apiGroup Address
