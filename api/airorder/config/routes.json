@@ -1,6 +1,22 @@
 {
   "routes": [
     {
+      "method": "POST",
+      "path": "/airorders/pay",
+      "handler": "Airorder.pay",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/airorders/checkpay",
+      "handler": "Airorder.checkpay",
+      "config": {
+        "policies": []
+      }
+    },
+    {
       "method": "GET",
       "path": "/airorders",
       "handler": "Airorder.find",

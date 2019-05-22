@@ -31,14 +31,16 @@ module.exports = {
     const condition = {name_contains: name};
 
     // 模糊搜索不能使用strapi.models
-    const provinces = await strapi.services.disprovince.fetchAll(condition);
+    //const provinces = await strapi.services.disprovince.fetchAll(condition);
     const cities = await strapi.services.discity.fetchAll(condition);
 
-    const newProvinces = provinces.toJSON().filter(v => {
-      return v.name.substr(-1) === "市";
-    })
+    // 城市表已添加直辖市
+    // const newProvinces = provinces.toJSON().filter(v => {
+    //   return v.name.substr(-1) === "市";
+    // })
 
-    const res = [...newProvinces, ...cities.toJSON()];
+    // const res = [...newProvinces, ...cities.toJSON()];
+    const res = [...cities.toJSON()];
 
     const data = res.map(v => {
       let { hotels, scenics, posts, ...props} = v;

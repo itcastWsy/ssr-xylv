@@ -601,6 +601,22 @@
 * @apiUse RkNotFoundException
 */
 
+/**
+* 
+* @api {get} /airs/city_sort 获取城市简称
+* @apiName getCitySort
+* @apiGroup AIR
+*
+* @apiParam {String} name  出发城市
+*
+* @apiSuccessExample 成功响应：
+{
+  data: "";
+  status: 0
+}
+*
+* @apiUse RkNotFoundException
+*/
 
 /**
 * 
@@ -685,6 +701,46 @@
 *
 * @apiUse RkNotFoundException
 */
+
+/**
+* 
+* @api {post} /airorders/pay 微信付款
+* @apiName air pay
+* @apiGroup AIR
+*
+* @apiParam {Number}               amount            订单金额 
+* @apiParam {String}               order_no          订单编号
+* 
+* @apiSuccessExample 成功响应：
+{
+    "order_id": "BD20190530120001",                     // 订单编号
+    "code_url": "weixin://wxpay/bizpayurl?pr=5benFv3",  // 支付二维码链接
+    "outTrade_no": "BD20190530120001",                  // 订单编号(带字母)
+    "nonce_str": "mk8FGAmn3DhJjSCedQdtGRbfbGwt8n6A"
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+/**
+* 
+* @api {post} /airorders/checkpay 查询付款状态
+* @apiName air pay
+* @apiGroup AIR
+*
+* @apiParam {Number}               nonce_str             支付接口返回的订单金额  
+* @apiParam {String}               out_trade_no          订单编号
+* 
+* @apiSuccessExample 成功响应：
+{
+{
+    "trade_state": "NOTPAY",
+    "statusTxt": "订单未支付"
+}
+*
+* @apiUse RkNotFoundException
+*/
+
 
 /**
 * 
