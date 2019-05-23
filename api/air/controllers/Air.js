@@ -57,27 +57,28 @@ module.exports = {
     const {name} = ctx.query;
     const sortName = name.replace("市", "");
 
-    const province = await strapi.models.disprovince.where({name}).fetch();
-    const city = await strapi.models.discity.where({name}).fetch();
+    //const province = await strapi.models.disprovince.where({name}).fetch();
+    const _city = await strapi.models.discity.where({name}).fetch();
 
-    const _dest = province || city;
+    //const _dest = province || city;
 
-    if(_dest){
+    if(_city){
       const url = encodeURI(`https://www.mafengwo.cn/flight/rest/citySuggest/?filter[prefix]=${sortName}`);
       //const url = `http://www.mafengwo.cn/flight/rest/flightlist/?${querystring.stringify(args)}`;
       const result = await fetch(url);
       const {data: { ex }, errno } = await result.json();
-      const dest = _dest.toJSON();
+      const dest = _city.toJSON();
+
 
       if(errno === 0 && !!ex[0]){
-        if(dest.level == 1){
-          await strapi.services.disprovince.edit({
-            ...dest, 
-            sort: ex[0].c
-          });
-        }
-        
-        if(dest.level === 2){
+        // if(dest.level == 1){
+        //   await strapi.services.disprovince.edit({
+        //     ...dest, 
+        //     sort: ex[0].c
+        //   });
+        // }
+
+        if(dest.level == 2){
           await strapi.services.discity.edit({
             ...dest, 
             sort:  ex[0].c
@@ -92,10 +93,10 @@ module.exports = {
         data: ex[0].c,
         status: 0
       };
-  }else {
-       return ctx.badRequest(null, '城市名称不存在');
-    }
-  },
+    }else {
+         return ctx.badRequest(null, '城市名称不存在');
+      }
+    },
 
 
   /**
