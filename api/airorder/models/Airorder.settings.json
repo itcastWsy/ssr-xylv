@@ -42,6 +42,18 @@
     "account": {
       "model": "account",
       "via": "airorders"
+    },
+    "status": {
+      "default": "",
+      "type": "integer"
+    },
+    "orderNo": {
+      "default": "",
+      "type": "string"
+    },
+    "payInfo": {
+      "default": "",
+      "type": "json"
     }
   }
 }

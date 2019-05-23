@@ -68,12 +68,13 @@ function raw(args) {
 module.exports = {
 
   // 请求微信服务器，获取支付连接返回后再客户端生成二维码(需登录)
-  pay: async ctx => {
-    const {amount, order_no} = ctx.request.body;
+  // pay: async ctx => {
+  pay: async (amount, order_no) => {
+    // const {amount, order_no} = ctx.request.body;
 
     /* 传递参数给微信服务器，返回支付url地址给我们生成二维码，并扫码支付 */ 
     const nonce_str = randomString();
-    const body = "next.js学成在线微信支付";
+    const body = "nuxtjs闲云旅游微信支付";
     const total_fee = 1;
     const spbill_create_ip = "127.0.0.1";
     const trade_type ='NATIVE';
@@ -154,13 +155,13 @@ module.exports = {
           }
       })
     })
-    const res = await promise;
-    return res;
+
+    return await promise;
   },
 
   checkpay: async ctx => {
     var url = `https://api.mch.weixin.qq.com/pay/orderquery`
-    const {nonce_str, out_trade_no} = ctx.request.body;
+    const {id, nonce_str, out_trade_no} = ctx.request.body;
     var ret = {
       appid: payConfig.appid,
       mch_id: payConfig.partner,
@@ -185,15 +186,11 @@ module.exports = {
            if(result.trade_state=="SUCCESS"){
               result.statusTxt="支付完成";       
               
-              let updatesql = ` update dt_orders set status = 1 where id=${out_trade_no} `;
-              commonProcess.execSqlCallBack(req,res,updatesql,(err1,datas1) => {  
-                  if(err1){
-                      resuleobj.fail('更新支付状态失败'+err1.message);           
-                      res.json(resuleobj.result); 
-                      return;
-                  }
-              })
-              
+              strapi.services.airorder.edit({
+                id,
+                status: 1,
+              });
+
            }else{
               result.statusTxt = getxmlnodevalue('trade_state_desc',body.toString("utf-8"));
            }
@@ -250,8 +247,6 @@ module.exports = {
     const {insurances, seat_xid, captcha, ...props} = ctx.request.body;
     let price = 0;
 
-    console.log(props.users)
-
     if(props.users && props.users.length === 0 || !props.users[0].username){
       return ctx.badRequest(null, '乘机人不能为空');
     }
@@ -301,19 +296,33 @@ module.exports = {
       }
     })
 
+    const orderNo = "XYLY" + Date.now();
     price += air.airport_tax_audlet * props.users.length;
 
-    await strapi.services.airorder.add({
+    //  生成支付信息
+    const payInfo = await module.exports.pay(price, orderNo);
+
+    if(payInfo.status === 1){
+      return ctx.badRequest(null, "订单提交失败，稍后再试");
+    }
+
+    const _data = await strapi.services.airorder.add({
       ...props,
       insuranceIds: insurances,
       price,
-      account: 1 // ctx.state.user.id
+      account: ctx.state.user.id,
+      status: 0,
+      orderNo,
+      payInfo
     });
 
+    const data = _data.toJSON();
+    delete data.account.password;
+
     return {
+      data,
       status: 0,
       message: "订单提交成功",
-      price: price
     };
   },
 

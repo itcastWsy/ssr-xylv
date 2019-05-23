@@ -130,7 +130,7 @@
 
 /**
 * 
-* @api {get} /scenics/banners 查找城市
+* @api {get} /scenics/banners 首页轮播图
 * @apiName get index banners
 * @apiGroup Index
 * 
@@ -588,7 +588,7 @@
 * 
 * @api {get} /airs/city 获取机票城市
 * @apiName getAirsCity
-* @apiGroup AIR
+* @apiGroup JiPiao
 *
 * @apiParam {String} departCity       出发城市
 *
@@ -605,7 +605,7 @@
 * 
 * @api {get} /airs/city_sort 获取城市简称
 * @apiName getCitySort
-* @apiGroup AIR
+* @apiGroup JiPiao
 *
 * @apiParam {String} name  出发城市
 *
@@ -622,7 +622,7 @@
 * 
 * @api {get} /airs 获取机票
 * @apiName getAirs
-* @apiGroup AIR
+* @apiGroup JiPiao
 *
 * @apiParam {String} departCity       出发城市
 * @apiParam {String} departCode       出发城市代码
@@ -660,7 +660,7 @@
 * 
 * @api {get} /airs/:id 选择机票
 * @apiName airs
-* @apiGroup AIR
+* @apiGroup JiPiao
 *
 * @apiParam {number} /:id             机票id
 * @apiParam {String} seat_xid         座位id
@@ -683,7 +683,7 @@
 * 
 * @api {post} /airorders 提交机票订单
 * @apiName air orders
-* @apiGroup AIR
+* @apiGroup JiPiao
 *
 * @apiParam {Array}    users<Object{username,id}>             用户列表
 * @apiParam {Array}    insurances<Number>       保险id
@@ -704,9 +704,23 @@
 
 /**
 * 
-* @api {post} /airorders/pay 微信付款
+* @api {post} /airorders/:id    订单详情
+* @apiName air detail
+* @apiGroup JiPiao
+* 
+* @apiSuccessExample 成功响应：
+{
+    ...// 订单详情
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+/**
+* 
+* @api {post} /airorders/pay 微信付款 (已自动提交订单支付)
 * @apiName air pay
-* @apiGroup AIR
+* @apiGroup JiPiao
 *
 * @apiParam {Number}               amount            订单金额 
 * @apiParam {String}               order_no          订单编号
@@ -725,9 +739,10 @@
 /**
 * 
 * @api {post} /airorders/checkpay 查询付款状态
-* @apiName air pay
-* @apiGroup AIR
+* @apiName air check pay
+* @apiGroup JiPiao
 *
+* @apiParam {Number}               id                    订单id  
 * @apiParam {Number}               nonce_str             支付接口返回的订单金额  
 * @apiParam {String}               out_trade_no          订单编号
 * 
