@@ -32,17 +32,33 @@ module.exports = {
 
     // 模糊搜索不能使用strapi.models
     //const provinces = await strapi.services.disprovince.fetchAll(condition);
-    const cities = await strapi.services.discity.fetchAll(condition);
+    const _cities = await strapi.services.discity.fetchAll(condition);
+    const cities = [..._cities.toJSON()];
 
-    // 城市表已添加直辖市
-    // const newProvinces = provinces.toJSON().filter(v => {
-    //   return v.name.substr(-1) === "市";
-    // })
 
-    // const res = [...newProvinces, ...cities.toJSON()];
-    const res = [...cities.toJSON()];
+    for(let i = 0, item; item = cities[i++];){
+    	if(!item.sort){
+    		const sortName = item.name.replace("市", "");
+    		const url = encodeURI(`https://www.mafengwo.cn/flight/rest/citySuggest/?filter[prefix]=${sortName}`);
+    		const result = await fetch(url);
+    		const {data: { ex }, errno } = await result.json();
 
-    const data = res.map(v => {
+ 
+    		if(errno === 0 && !!ex[0]){
+    			cities[i - 1].sort = ex[0].c;
+
+    			await strapi.services.discity.edit({
+		        	id: item.id, 
+		        	sort: ex[0].c
+		        }) ;
+    		}else{
+		        return ctx.badRequest(null, '查询错误，请稍后再试');
+		        break;
+		    }
+    	}
+    }
+
+    const data = cities.map(v => {
       let { hotels, scenics, posts, ...props} = v;
       return props;
     })
