@@ -194,12 +194,16 @@
 *
 * @apiParam {Number} id             酒店id(酒店详情)
 * @apiParam {Number} city 			城市id
+* @apiParam {Number} price_in       酒店价格
 * @apiParam {Number} scenic         景点id
 * @apiParam {String} name_contains 	名字模糊查询
 * @apiParam {Number} hotellevel     酒店星级
 * @apiParam {Number} hoteltype      酒店类型
 * @apiParam {Number} hotelbrand     酒店品牌
 * @apiParam {Number} hotelasset     酒店设施
+* @apiParam {Date}   enterTime       入店时间
+* @apiParam {Date}   enterTime       离店时间
+* @apiParam {Number} person         人数
 * @apiParam {String} _sort  		排序
 * @apiParam {Number} _limit  		条数
 * @apiParam {Number} _start         开始数据（分页）
@@ -207,176 +211,16 @@
 * @apiSuccess {Object} data 酒店信息
 * 
 * @apiExample 请求例子
-* 	127.0.0.1:1337/hotels?city=197&country=2046&name_contains=香格&_limit=1&_start=0
+* 	127.0.0.1:1337/hotels?city=197&enterTime=2019-06-12&leftTime=2019-07-15&_limit=1&_start=0
 * 
 * @apiSuccessExample 成功响应：
 {
-    "data": {
-        "hotels": [
-            {
-                "id": 2,
-                "name": "香格里拉",
-                "enName": "xiang ge li la",
-                "isHot": null,
-                "score": 3.5,
-                "location": {},
-                "summary": "香格里拉大酒店",
-                "enterTime": "2019-04-02 00:00:00",
-                "leftTime": "2019-04-03 00:00:00",
-                "buildTime": "2019-04-03 00:00:00",
-                "lastBuildTime": "2019-04-03 00:00:00",
-                "roomCount": 50,
-                "province": {
-                    "id": 18,
-                    "name": "广东省",
-                    "code": "440000000000",
-                    "parentCode": "",
-                    "level": "1",
-                    "created_at": "2019-04-02 08:49:44",
-                    "updated_at": "2019-04-02 08:49:44"
-                },
-                "city": {
-                    "id": 197,
-                    "name": "广州市",
-                    "code": "440100000000",
-                    "parentCode": "440000000000",
-                    "level": "2",
-                    "created_at": "2019-04-02 08:18:16",
-                    "updated_at": "2019-04-02 08:18:16"
-                },
-                "hotellevel": {
-                    "id": 5,
-                    "level": 5,
-                    "name": "5星",
-                    "created_at": 1554366186264,
-                    "updated_at": 1554366186277
-                },
-                "hoteltype": {
-                    "id": 2,
-                    "name": "高端酒店",
-                    "created_at": 1554263122400,
-                    "updated_at": 1554263122417
-                },
-                "hotelbrand": {
-                    "id": 2,
-                    "name": "香格里拉",
-                    "cities": [
-                        "广州",
-                        "大理",
-                        "上海",
-                        "昆明"
-                    ],
-                    "created_at": 1554261173669,
-                    "updated_at": 1554261258768
-                },
-                "price": 500,
-                "country": {
-                    "id": 2046,
-                    "name": "天河区",
-                    "code": "440106000000",
-                    "parentCode": "440100000000",
-                    "level": "3",
-                    "created_at": "2019-04-06 01:32:49",
-                    "updated_at": "2019-04-06 01:32:49"
-                },
-                "created_at": 1554261979396,
-                "updated_at": 1554514601624,
-                "pics": [
-                    {
-                        "id": 1,
-                        "name": "xianggelila.jpg",
-                        "hash": "d841a1a0e05440388d13b23cddaaf8d6",
-                        "sha256": "OUpRah3GWvpIZBSgAnUm4LspRFW1-kypP2YK4lnHZpA",
-                        "ext": ".jpg",
-                        "mime": "image/jpeg",
-                        "size": "33.59",
-                        "url": "/uploads/d841a1a0e05440388d13b23cddaaf8d6.jpg",
-                        "provider": "local",
-                        "public_id": null,
-                        "created_at": 1554369718286,
-                        "updated_at": 1554369718310
-                    }
-                ],
-                "comments": [
-                    {
-                        "id": 1,
-                        "account": 1,
-                        "content": "酒店环境很好",
-                        "like": null,
-                        "likeIds": [],
-                        "score": 4.5,
-                        "hotel": 2,
-                        "created_at": 1554368708175,
-                        "updated_at": 1554368708201
-                    }
-                ],
-                "hotelassets": [
-                    {
-                        "id": 1,
-                        "name": "wifi",
-                        "type": "房间设施",
-                        "hotels": 2,
-                        "created_at": 1554264873390,
-                        "updated_at": 1554514601655
-                    },
-                    {
-                        "id": 2,
-                        "name": "热水壶",
-                        "type": "房间设施",
-                        "hotels": 2,
-                        "created_at": 1554366902573,
-                        "updated_at": 1554514601636
-                    },
-                    {
-                        "id": 3,
-                        "name": "吹风机",
-                        "type": "房间设施",
-                        "hotels": 2,
-                        "created_at": 1554366910595,
-                        "updated_at": 1554514601664
-                    },
-                    {
-                        "id": 4,
-                        "name": "外币兑换服务",
-                        "type": "酒店服务",
-                        "hotels": 2,
-                        "created_at": 1554367127462,
-                        "updated_at": 1554514601663
-                    },
-                    {
-                        "id": 5,
-                        "name": "洗衣服务",
-                        "type": "酒店服务",
-                        "hotels": 2,
-                        "created_at": 1554367145794,
-                        "updated_at": 1554514601680
-                    },
-                    {
-                        "id": 6,
-                        "name": "电梯",
-                        "type": "主要设施",
-                        "hotels": 2,
-                        "created_at": 1554367166516,
-                        "updated_at": 1554514601674
-                    }
-                ],
-                "products": [
-                    {
-                        "name": "携程",
-                        "price": "50040.52"
-                    },
-                    {
-                        "name": "艺龙",
-                        "price": "5008.55"
-                    },
-                    {
-                        "name": "Hotels.com",
-                        "price": "50059.90"
-                    }
-                ]
-            }
-        ]
-    }
+    "data": [       // 酒店列表
+        
+    ],
+    nextStart: 10,  // 下次分页开始
+    total: 55       // 总数据条数
+    
 }
 *
 * @apiUse RkNotFoundException
@@ -393,10 +237,10 @@
 * @apiSuccessExample 成功响应：
 {
     data: {
-        "levels": [],
-        "types": [],
-        "assets": [],
-        "brands": []
+        "levels": [],   // 酒店等级
+        "types": [],    // 酒店类型
+        "assets": [],   // 酒店设施
+        "brands": []    // 酒店品牌
     }
 }
 *
@@ -407,7 +251,7 @@
 * 
 * @api {get} /hotels/comments 获取酒店评论
 * @apiName Get Hotel Comments
-* @apiGroup COMMENT
+* @apiGroup Hotel
 *
 * @apiParam {Number} hotel          酒店id
 * @apiParam {String} _sort          排序
@@ -594,8 +438,40 @@
 *
 * @apiSuccessExample 成功响应：
 {
-  data:;
-  status: 0
+  data: [{
+    code: "440100000000",
+    created_at: "2019-04-02 08:18:16",
+    id: 197,
+    level: "2",
+    name: "广州市",
+    parentCode: "440000000000",
+    sort: "CAN",
+    updated_at: 1558617184703
+  }];
+  total: 1
+}
+*
+* @apiUse RkNotFoundException
+*/
+
+/**
+* 
+* @api {get} /airs/sale 获取推荐机票
+* @apiName getAirsSale
+* @apiGroup JiPiao
+*
+* @apiSuccessExample 成功响应：
+{
+  data: [{
+    cover: "https://imgsrc.baidu.com/baike/pic/item/a71ea8d3fd1f41340d8f3dec281f95cad0c85ee3.jpg"
+    departCity: "广州"
+    departCode: "CAN"
+    departDate: "2019-06-17"
+    destCity: "上海"
+    destCode: "SHA"
+    price: 760
+  }];
+  total: 1
 }
 *
 * @apiUse RkNotFoundException
