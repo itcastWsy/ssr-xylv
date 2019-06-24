@@ -1,38 +1,43 @@
-# travel-admin
+# 闲云旅游后台
 
-## step
+> 闲云旅游管理后台 / API接口
 
-### 1.Clone respository
-
-```
-git clone [仓库地址]
-```
-
-### 2.install dependencies
+## 安装
 
 ```
-cd travel-admin & yarn install
+npm install 
 ```
 
-### 3.start
+或者用`yarn`
+
+```
+yarn install
+```
+
+
+
+## 启动
 
 ```
 npm run start
 ```
 
 
-## api docs
 
-### Install apidocs
-
-```
-npm install apidoc -g
-```
-
-### Generate api documention
+## API文档
 
 ```
-apidoc -i docs -o apidoc
+npm run docs
 ```
 
-打开根目录的`apidoc`文件夹的`index.html`查看文档
+打开根目录的`apidoc`文件夹的`index.html`查看`api`文档
+
+
+
+## 数据库
+
+根目录下的`.temp/data.db`是`sqlite`数据库表，可以下载`DB Browser (SQLite)`工具打开该文件。
+
+<https://sqlitebrowser.org/>
+
+> 可以打开sqlite数据库的软件很有很多，可以自行搜索

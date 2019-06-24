@@ -430,7 +430,7 @@
 
 /**
 * 
-* @api {get} /airs/city 获取机票城市
+* @api {get} /airs/city 实时机票城市
 * @apiName getAirsCity
 * @apiGroup JiPiao
 *
@@ -456,7 +456,7 @@
 
 /**
 * 
-* @api {get} /airs/sale 获取推荐机票
+* @api {get} /airs/sale 推荐机票
 * @apiName getAirsSale
 * @apiGroup JiPiao
 *
@@ -479,7 +479,7 @@
 
 /**
 * 
-* @api {get} /airs/city_sort 获取城市简称
+* @api {get} /airs/city_sort 城市简称 [弃用]
 * @apiName getCitySort
 * @apiGroup JiPiao
 *
@@ -496,7 +496,7 @@
 
 /**
 * 
-* @api {get} /airs 获取机票
+* @api {get} /airs 机票列表
 * @apiName getAirs
 * @apiGroup JiPiao
 *
@@ -594,7 +594,7 @@
 
 /**
 * 
-* @api {post} /airorders/pay 微信付款 (已自动提交订单支付)
+* @api {post} /airorders/pay 微信付款
 * @apiName air pay
 * @apiGroup JiPiao
 *

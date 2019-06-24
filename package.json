@@ -10,7 +10,8 @@
     "build": "cross-env process.env.PORT=9095 process.env.NODE_ENV=production node server.js",
     "strapi": "node_modules/strapi/bin/strapi.js",
     "lint": "node_modules/.bin/eslint api/**/*.js config/**/*.js plugins/**/*.js",
-    "postinstall": "node node_modules/strapi/lib/utils/post-install.js"
+    "postinstall": "node node_modules/strapi/lib/utils/post-install.js",
+    "docs": "apidoc -i docs -o apidoc"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
