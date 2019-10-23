@@ -318,10 +318,6 @@
 * @apiGroup COMMENT
 *
 * @apiHeader {String} Authorization token
-* @apiHeaderExample token请求头
-{
-    Authorization： Bearer [token]
-}
 *
 * @apiParam {Number} id             评论id
 * 
@@ -343,10 +339,6 @@
 *
 * @apiHeader {string} Content-Type application/json
 * @apiHeader {String} Authorization token
-* @apiHeaderExample token请求头
-{
-    Authorization： Bearer [token]
-}
 *
 * @apiParam {String} content 评论内容
 * @apiParam {Object} score   评分对象
@@ -356,8 +348,8 @@
 * @apiParam {Float} score.all        总体评分
 * @apiParam {Array}  pics             图片
 *
-* @apiParam {Number} hotel            酒店id / 
-* @apiParam {Number} post             评论id
+* @apiParam {Number} hotel            酒店id 
+* @apiParam {Number} post             文章id
 *
 * @apiParam {Number} follow           回复id
 * 
@@ -377,10 +369,6 @@
 * @apiGroup UPLOAD
 *
 * @apiHeader {String} Authorization token
-* @apiHeaderExample token请求头
-{
-    Authorization： [token]
-}
 *
 * @apiParam {files} files       评论id
 *
@@ -434,7 +422,7 @@
 * @apiName getAirsCity
 * @apiGroup JiPiao
 *
-* @apiParam {String} departCity       出发城市
+* @apiParam {String} name       出发城市
 *
 * @apiSuccessExample 成功响应：
 {
@@ -561,6 +549,8 @@
 * @apiName air orders
 * @apiGroup JiPiao
 *
+* @apiHeader {String} Authorization token
+*
 * @apiParam {Array}    users<Object{username,id}>             用户列表
 * @apiParam {Array}    insurances<Number>       保险id
 * @apiParam {String}               contactName        联系人名字
@@ -580,9 +570,11 @@
 
 /**
 * 
-* @api {post} /airorders/:id    订单详情
+* @api {get} /airorders/:id    订单详情
 * @apiName air detail
 * @apiGroup JiPiao
+*
+* @apiHeader {String} Authorization token
 * 
 * @apiSuccessExample 成功响应：
 {
@@ -597,6 +589,8 @@
 * @api {post} /airorders/pay 微信付款
 * @apiName air pay
 * @apiGroup JiPiao
+*
+* @apiHeader {String} Authorization token
 *
 * @apiParam {Number}               amount            订单金额 
 * @apiParam {String}               order_no          订单编号
@@ -617,6 +611,8 @@
 * @api {post} /airorders/checkpay 查询付款状态
 * @apiName air check pay
 * @apiGroup JiPiao
+*
+* @apiHeader {String} Authorization token
 *
 * @apiParam {Number}               id                    订单id  
 * @apiParam {Number}               nonce_str             支付接口返回的订单金额  
@@ -692,10 +688,6 @@
 * @apiGroup POSTS
 *
 * @apiHeader {String} Authorization token
-* @apiHeaderExample token请求头
-{
-    Authorization： Bearer [token]
-}
 *
 * @apiParam {Text}         content            文章内容
 * @apiParam {String}       title              文章标题
@@ -733,10 +725,6 @@
 * @apiGroup POSTS
 *
 * @apiHeader {String} Authorization token
-* @apiHeaderExample token请求头
-{
-    Authorization： Bearer [token]
-}
 *
 * @apiParam {Number} id             评论id
 * 
@@ -782,10 +770,6 @@
 * @apiGroup POSTS
 *
 * @apiHeader {String} Authorization token
-* @apiHeaderExample token请求头
-{
-    Authorization： Bearer [token]
-}
 *
 * @apiParam {Number} id       文章id
 * 

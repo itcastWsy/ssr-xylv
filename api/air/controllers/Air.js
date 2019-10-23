@@ -35,7 +35,6 @@ module.exports = {
     const _cities = await strapi.services.discity.fetchAll(condition);
     const cities = [..._cities.toJSON()];
 
-
     for(let i = 0, item; item = cities[i++];){
     	if(!item.sort){
     		const sortName = item.name.replace("市", "");
@@ -48,13 +47,14 @@ module.exports = {
     			cities[i - 1].sort = ex[0].c;
 
     			await strapi.services.discity.edit({
-		        	id: item.id, 
-		        	sort: ex[0].c
-		        }) ;
-    		}else{
-		        return ctx.badRequest(null, '查询错误，请稍后再试');
-		        break;
-		    }
+	        	id: item.id, 
+	        	sort: ex[0].c
+	        }) ;
+    		}
+        //  else{
+		    //     return ctx.badRequest(null, '查询错误，请稍后再试');
+		    //     break;
+		    // }
     	}
     }
 

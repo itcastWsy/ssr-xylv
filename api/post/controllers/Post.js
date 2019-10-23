@@ -190,7 +190,9 @@ module.exports = {
     const data = posts.map(v => ({
       ...v,
       summary: v.content.replace(/<\/?.+?>/g,""),
-      images: v.content.match(imgReg).map(img => img.match(srcReg)[1])
+      images: v.content.match(imgReg) && 
+              v.content.match(imgReg).map(img => img.match(srcReg)[1])
+              || []
     }))
 
     // total
@@ -218,7 +220,9 @@ module.exports = {
 
     const data = posts.map(v => ({
       ...v,
-      images: v.content.match(imgReg).map(img => img.match(srcReg)[1])
+      images: v.content.match(imgReg) && 
+              v.content.match(imgReg).map(img => img.match(srcReg)[1])
+              || []
     }))
 
     return {

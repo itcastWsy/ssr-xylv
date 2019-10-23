@@ -21,6 +21,7 @@
     "eslint-plugin-react": "^7.7.0"
   },
   "dependencies": {
+    "apidoc": "^0.17.7",
     "cross-env": "^5.2.0",
     "knex": "latest",
     "lodash": "^4.17.5",

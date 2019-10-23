@@ -61,7 +61,7 @@ module.exports = {
     const user = await strapi.models.account.where(params).fetch();
 
     if(!user){
-      return ctx.badRequest(null, 'username or password invalid.');
+      return ctx.badRequest(null, '用户名或者密码无效.');
     }
 
     if (user.role.type !== 'root' && ctx.request.admin) {
