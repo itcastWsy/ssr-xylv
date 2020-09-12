@@ -25,7 +25,7 @@
     "cross-env": "^5.2.0",
     "knex": "latest",
     "lodash": "^4.17.5",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.1",
     "request": "^2.88.0",
     "sqlite3": "latest",
     "strapi": "3.0.0-alpha.25.2",
