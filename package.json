@@ -28,7 +28,7 @@
     "node-fetch": "^2.3.0",
     "request": "^2.88.0",
     "sqlite3": "latest",
-    "strapi": "3.0.0-alpha.25.2",
+    "strapi": "3.2.5",
     "strapi-hook-bookshelf": "3.0.0-alpha.25.2",
     "strapi-hook-knex": "3.0.0-alpha.25.2"
   },
